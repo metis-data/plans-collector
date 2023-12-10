@@ -28,7 +28,7 @@ jobs:
         with:
           tag: ${{ steps.version.outputs.tag }}
       - name: Log in to npm
-        run: npm login --registry=https://registry.npmjs.org/ --scope=@metis-data --always-auth --//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+        run: npm login --registry=https://registry.npmjs.org/ --scope=@metis-data  --//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
       - name: Publish     
         run: |
           git config user.name "${{ github.actor }}"
