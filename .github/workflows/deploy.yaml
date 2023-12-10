@@ -29,7 +29,7 @@ jobs:
           tag: ${{ steps.version.outputs.tag }}
       - name: Publish  
         env:
-         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_READ_ONLY }}   
         run: |
           # git config user.name "${{ github.actor }}"
           # git config user.email "${{ github.actor }}@users.noreply.github.com"
