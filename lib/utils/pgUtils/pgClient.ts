@@ -24,7 +24,7 @@ export class PgClient {
       this.client = new Client(connectionString);
   }
 
-  private connectClient = async(): Promise<void> => {
+  public connectClient = async(): Promise<void> => {
       this.client.connect();
   }
 
