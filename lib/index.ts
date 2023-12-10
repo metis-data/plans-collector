@@ -1,4 +1,4 @@
 
 export const hello = (name: string): string => {
-  return `Hello, ${name}!`;
+  return `Hello, ${name} let test the package`;
 };
