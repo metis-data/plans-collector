@@ -3,7 +3,7 @@ import { PlansCollector } from '../lib/index';
 
 
 
-const connectionString = `postgresql://postgres:Trustno1@database-2.cofhrj7zmyn4.eu-central-1.rds.amazonaws.com/airbases-demo`
+const connectionString = `וYOUR CONNECTION STRING`
 describe('PlansCollector', () => {
   let planCollector: PlansCollector;
   beforeAll(() => {
