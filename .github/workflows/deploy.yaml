@@ -27,14 +27,14 @@ jobs:
         uses: ./.github/actions/bump-version
         with:
           tag: ${{ steps.version.outputs.tag }}
-      - name: Log in to npm
-        run: npm login --registry=https://registry.npmjs.org/ --scope=@metis-data  --//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-      - name: Publish     
+      - name: Publish  
+        env:
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          npm version patch
-          git push
+          # git config user.name "${{ github.actor }}"
+          # git config user.email "${{ github.actor }}@users.noreply.github.com"
+          # npm version patch
+          # git push
           npm publish --access=public
       - name: Tag
         run: |
