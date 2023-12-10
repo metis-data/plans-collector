@@ -1,5 +1,5 @@
 {
-  "name": "plans-collector",
+  "name": "@metis-data/plans-collector",
   "version": "1.0.0",
   "description": "This package collect plans by analyzing the queries from pg_stats_activity.",
   "main": "index.js",
@@ -20,5 +20,8 @@
   "devDependencies": {
     "@types/node": "^20.10.4",
     "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
