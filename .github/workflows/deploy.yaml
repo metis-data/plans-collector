@@ -2,6 +2,7 @@ name: Deploy On Changes
 
 on:
   merge_group:
+  workflow_dispatch:
 
 jobs:
   publish:
