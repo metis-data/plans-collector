@@ -16,9 +16,9 @@ export class PlansCollector {
   private static connectionString: string;
   private static intervalPeriod: number; // need number and measure minutes,seconds,hours
   private static queriesAmountLimit: number;
-  private static lastQueriesIdPublished: String[];
   private static database: string;
   private static  INTERVAL_BUFFER: number = 5;
+  private ESTIMATED_ANALYZED_PREFIX = 'EXPLAIN (FORMAT JSON, VERBOSE)'
 
   private uniqueQueriesAggregation: any = new Map<string, any>();
   private uniqueQueriesPreviousAggregation: any = new Map<string, any>();
@@ -48,7 +48,7 @@ export class PlansCollector {
     const statsActivityData = await pgClient.queryDatabase(statsActivityQuery(PlansCollector.database, PlansCollector.queriesAmountLimit));
 
     statsActivityData.map((item: any) => {
-      if(!this.uniqueQueriesAggregation.get(item.query_id)) {
+      if(!this.uniqueQueriesAggregation.get(item.query_id) && !this.uniqueQueriesPreviousAggregation.get(item.query_id)) {
         this.uniqueQueriesAggregation.set(item.query_id, item)
       }
     })
@@ -65,11 +65,11 @@ export class PlansCollector {
 
   private async getPlansOfQueries (pgClient: PgClient) {
    
-    const ESTIMATED_ANALYZED_PREFIX = 'EXPLAIN (FORMAT JSON, VERBOSE)'
+    
 
     const queryPromises = Array.from(this.uniqueQueriesAggregation).map(async ([key, value]: any) => {
       try {
-        const planResult = await pgClient.queryDatabase(ESTIMATED_ANALYZED_PREFIX + value.query);
+        const planResult = await pgClient.queryDatabase(this.ESTIMATED_ANALYZED_PREFIX + value.query);
         // Handle the result as needed
         return { key, value, result: planResult };
       } catch (error: any) {
@@ -83,13 +83,9 @@ export class PlansCollector {
     this.uniqueQueriesPreviousAggregation = deepMapsCopy(this.uniqueQueriesAggregation);
     this.uniqueQueriesAggregation.clear();
 
-    const res = await Promise.allSettled(queryPromises);
-    return res;
+    return await Promise.allSettled(queryPromises);
   }
 
-  private storeQueryIds () {
-
-  }
 
   public init(planCollectorSettings: PlansCollectorSettings ) {
       const { connectionString, intervalPeriod, queriesAmountLimit } = {...planCollectorSettings};
@@ -107,10 +103,10 @@ export class PlansCollector {
       pgClient.connectClient();
 
       await this.aggregateAllUniqueQueryIds(pgClient)
-      this.getPlansOfQueries(pgClient)
+      await this.getPlansOfQueries(pgClient)
 
 
-    
+      pgClient.endClient()
     } catch (error) {
        throw(error)
     }

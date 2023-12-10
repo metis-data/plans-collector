@@ -20,7 +20,23 @@ describe('PlansCollector', () => {
 
 
   test('getPlansCollector returns the same instance', async () => {
-    const instance1 = await planCollector.getPlans();
+   
+
+      // Function to call getPlans and return the instance
+  const getPlansAndReturnInstance = async () => {
+    return await planCollector.getPlans();
+  };
+
+  // Call getPlans multiple times with a delay
+  const instances = await Promise.all(Array.from({ length: 3 }, (_, i) => {
+    const delay = i * 10000; // 10 seconds delay for each iteration
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        const instance = await getPlansAndReturnInstance();
+        resolve(instance);
+      }, delay);
+    });
+  }));
    
 
     // expect(instance1).toBe(instance2);
