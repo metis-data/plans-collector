@@ -1,6 +1,6 @@
 {
   "name": "@metis-data/plans-collector",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "This package collect plans by analyzing the queries from pg_stats_activity.",
   "main": "index.js",
   "scripts": {
