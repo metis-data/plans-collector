@@ -27,9 +27,9 @@ jobs:
         uses: ./.github/actions/bump-version
         with:
           tag: ${{ steps.version.outputs.tag }}
-      - name: Publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Log in to npm
+        run: npm login --registry=https://registry.npmjs.org/ --scope=@metis-data --always-auth --//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+      - name: Publish     
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
