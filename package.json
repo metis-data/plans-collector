@@ -1,0 +1,24 @@
+{
+  "name": "plans-collector",
+  "version": "1.0.0",
+  "description": "This package collect plans by analyzing the queries from pg_stats_activity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metis-data/plans-collector.git"
+  },
+  "author": "Gideon Shmila",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/metis-data/plans-collector/issues"
+  },
+  "homepage": "https://github.com/metis-data/plans-collector#readme",
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "typescript": "^5.3.3"
+  }
+}

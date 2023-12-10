@@ -1,0 +1,41 @@
+name: Deploy On Changes
+
+on:
+  merge_group:
+
+jobs:
+  publish:
+    name: Publish lib
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.13.0
+          registry-url: "https://registry.npmjs.org/"
+          scope: "@metis-data"
+      - name: Get version
+        id: version
+        run: echo ::set-output name=tag::$(git tag -l "$(echo plans-collector)*" | sort -V -r | head -n 1)
+      - name: Bump version
+        id: bump-version
+        uses: ./.github/actions/bump-version
+        with:
+          tag: ${{ steps.version.outputs.tag }}
+      - name: Publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          npm version patch
+          git push
+          npm publish --access=public
+      - name: Tag
+        run: |
+          git tag ${{ steps.bump-version.outputs.version }}
+          git push --tag || true
